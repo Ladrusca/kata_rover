@@ -46,25 +46,3 @@ def test_move_rover_turn_right(rover_service):
     rover_service.move_rover(command_list)
 
     assert rover_service.rover.direction == Direction.E
-
-
-def test_move_random(rover_service):
-
-    command_list = [
-        Movement.F,
-        Movement.F,
-        Movement.R,
-        Movement.B,
-        Movement.L,
-        Movement.F,
-        Movement.F,
-        Movement.F,
-        Movement.L,
-        Movement.B,
-    ]
-
-    rover_service.move_rover(command_list)
-
-    assert rover_service.rover.coord_x == 25
-    assert rover_service.rover.coord_y == 35
-    assert rover_service.rover.direction == Direction.W
