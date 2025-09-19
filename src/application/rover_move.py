@@ -1,7 +1,6 @@
 from src.ports.primary.irover_move import IRoverMove
 from src.domain.entities.rover import Rover
-from src.domain.value_objects.position import Position
-from src.domain.value_objects.movement import Movement
+from src.domain.services.movement_rules_service import MovementRulesService
 
 
 class RoverMove(IRoverMove):
@@ -13,52 +12,10 @@ class RoverMove(IRoverMove):
     def move_rover(self, rover: Rover, command_list: list) -> None:
 
         for movement in command_list:
+            direction_x, directiony, new_direction = MovementRulesService.get_rule(rover.direction, movement)
 
-            if rover.direction == Position.N:
-                if movement == Movement.F:
-                    rover.coord_y += 1
+            rover.coord_x += direction_x
+            rover.coord_y += directiony
 
-                elif movement == Movement.B:
-                    rover.coord_y -= 1
-                elif movement == Movement.L:
-                    rover.direction = Position.W
-
-                elif movement == Movement.R:
-                    rover.direction = Position.E
-
-            elif rover.direction == Position.S:
-                if movement == Movement.F:
-                    rover.coord_y -= 1
-
-                elif movement == Movement.B:
-                    rover.coord_y += 1
-                elif movement == Movement.L:
-                    rover.direction = Position.E
-
-                elif movement == Movement.R:
-                    rover.direction = Position.W
-
-            elif rover.direction == Position.W:
-                if movement == Movement.F:
-                    rover.coord_x -= 1
-
-                elif movement == Movement.B:
-                    rover.coord_x += 1
-
-                elif movement == Movement.L:
-                    rover.direction = Position.S
-
-                elif movement == Movement.R:
-                    rover.direction = Position.N
-
-            elif rover.direction == Position.E:
-                if movement == Movement.F:
-                    rover.coord_x += 1
-
-                elif movement == Movement.B:
-                    rover.coord_x -= 1
-                elif movement == Movement.L:
-                    rover.direction = Position.N
-
-                elif movement == Movement.R:
-                    rover.direction = Position.S
+            if new_direction:
+                rover.direction = new_direction
