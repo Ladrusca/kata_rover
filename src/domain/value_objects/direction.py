@@ -1,4 +1,4 @@
-class Position:
+class Direction:
     N = "N"
     S = "S"
     E = "E"
